@@ -101,32 +101,46 @@ int non_blank(void) {
  */
 int get_guess(char guess[], int dimensions, char maxchar, int try) {
    char discard;
-   int retry = 1;
-   int i = 0;
+   int retry;
+   int i;
 
    do {
+      i = 0;
+      retry = 0;
+
       // take input one character at a time and parse
-      while (i < dimensions) {
-         char letter;
+      // make sure each character is an uppercase letter
+      char letter;
+      do {
          scanf("%c", &letter);
          
-         // make sure each character is an uppercase letter
-         if (isalpha(letter)) {
+         if (isalpha(letter) && i < dimensions) {
             if (islower(letter))
                guess[i++] = letter + 'A' - 'a';
             else
                guess[i++] = letter;
          }
+      } while (letter != '\n'); 
+
+      // if user gave pattern with bad dimensions, retry
+      if (i < dimensions) {
+         printf("Error: Bad format. Try again\n");
+         retry = 1;
+         continue;
       }
 
-      // discard any excess characters 
-      do {
-         scanf("%c", &discard);
-      } while (discard != '\n');
-
-      // add null to end of guess and stop the retry loop
+      // good dimensions so add a null to the end of guess
       guess[dimensions] = 0;
-      retry = 0;
+
+      // if user gave bad characters
+      for (i = 0; i < dimensions; i++) {
+         if (guess[i] > maxchar) {
+            printf("Error: Bad format. Try again\n");
+            retry = 1;
+            break;
+         }
+      }
+      
    } while(retry);
 }
  
