@@ -73,7 +73,7 @@ int match(char model[], char guess[], int dimensions) {
    // check if exact match else see if inexact match
    for (i = 0; i < dimensions; i++) {
       if (guess[i] != model[i] && existMap[guess[i] - 'A']) 
-         inexact += existMap[guess[i] - 'A'];
+         inexact++;
    }
 
    printf("%d Exact and %d Inexact\n", exact, inexact);
@@ -142,6 +142,9 @@ int main() {
    int dim;
    int seed;
 
+   int gameNum = 1;
+   double tryLog[1024];
+
    int quit = 0;
    char discard;
 
@@ -198,20 +201,32 @@ int main() {
       while (prompt_for_guess) {
          char guess[512];
 
-         printf("\n%d. Enter your guess: ", count++);
+         printf("\n%d. Enter your guess: ", count);
          if (!get_guess(guess, dim, maxchar, count)) {
             printf("Unexpected EOF\n");
             return 1;
          }
 
-         if (match(model, guess, dim) == dim) 
+         if (match(model, guess, dim) == dim) {
             prompt_for_guess = 0;
+            tryLog[gameNum - 1] = count;
+         }
+
+         count++;
 
 #if DEBUG
          printf("%s\n", guess);
 #endif
       }
-      
+
+      // display current average
+      int i; 
+      double sum = 0;
+      for (i = 0; i < gameNum; i++) {
+         sum += tryLog[i]; 
+      }
+      printf("Current average: %0.3f\n", sum / gameNum);
+
       // ask if user wants to quit
       char quit_resp;
       printf("Another game [Y/N]? ");
@@ -223,8 +238,10 @@ int main() {
 
       scanf("%c", &discard);
 
-      if (quit_resp == 'Y' || quit_resp == 'y') 
+      if (quit_resp == 'Y' || quit_resp == 'y') {
          quit = 0;
+         gameNum++;
+      }
       else
          quit = 1;
 
