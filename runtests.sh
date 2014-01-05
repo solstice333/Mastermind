@@ -1,4 +1,4 @@
 #!/bin/bash
 
-#./a.out < test
-#./a.out < test_fail
+./a.out < test1
+./a.out < test2

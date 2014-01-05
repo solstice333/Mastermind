@@ -5,7 +5,7 @@
 #define MAXCHAR 'F'
 #define NUMPARAMS 3
 
-#define DEBUG 1
+#define DEBUG 0
 
 static int seed;
 
@@ -76,11 +76,7 @@ int match(char model[], char guess[], int dimensions) {
          inexact += existMap[guess[i] - 'A'];
    }
 
-#if DEBUG
-   printf("exact matches: %d\n", exact);
-   printf("inexact matches: %d\n", inexact);
-#endif
-
+   printf("%d Exact and %d Inexact\n", exact, inexact);
    return exact;
 }
  
@@ -104,34 +100,39 @@ int get_guess(char guess[], int dimensions, char maxchar, int try) {
    int retry = 0;
    int i = 0;
 
-   // take input one character at a time and parse
-   // make sure each character is an uppercase letter
-   char letter;
    do {
-      scanf("%c", &letter);
+      i = 0;
+      retry = 0;
+      // take input one character at a time and parse
+      // make sure each character is an uppercase letter
+      char letter;
+      do {
+         if (scanf("%c", &letter) == EOF)
+            return 0;
          
-      if (isalpha(letter) && i < dimensions) {
-         if (islower(letter))
-            guess[i++] = letter + 'A' - 'a';
-         else
-            guess[i++] = letter;
+         if (isalpha(letter) && i < dimensions) {
+            if (islower(letter))
+               guess[i++] = letter + 'A' - 'a';
+            else
+               guess[i++] = letter;
+         }
+      } while (letter != '\n'); 
+
+      // if user gave pattern with bad dimensions
+      if (i < dimensions) {
+         retry = 1;
       }
-   } while (letter != '\n'); 
 
-   // if user gave pattern with bad dimensions
-   if (i < dimensions) {
-      return 0;
-   }
+      // good dimensions so add a null to the end of guess
+      guess[dimensions] = 0;
 
-   // good dimensions so add a null to the end of guess
-   guess[dimensions] = 0;
-
-   // if user gave bad characters
-   for (i = 0; i < dimensions; i++) {
-      if (guess[i] > maxchar) {
-         return 0;
+      // if user gave bad characters
+      for (i = 0; i < dimensions; i++) {
+         if (guess[i] > maxchar) {
+            retry = 1;
+         }
       }
-   }
+   } while (retry);
 
    return 1;
 }
@@ -151,11 +152,26 @@ int main() {
       printf("Enter maxchar, dimensions, and seed => ");
       checkArgNum = scanf("%c %d %d", &maxchar, &dim, &seed);
 
-      if (checkArgNum == NUMPARAMS) 
-         scanf("%c", &discard);
-      else {
+      // error checking for argument input
+      if (checkArgNum != NUMPARAMS) {
          printf("Error: Bad initial values\n");
          return 1;
+      }
+      else {
+         scanf("%c", &discard);
+         
+         if (!isalpha(maxchar)) {
+            printf("Error: Bad initial values\n");
+            return 1;
+         }
+
+         if (islower(maxchar))
+            maxchar = maxchar + 'A' - 'a';
+
+         if (maxchar > MAXCHAR || dim < 1 || dim > MAXDIM) {
+            printf("Error: Bad initial values\n");
+            return 1;
+         }
       }
 
 #if DEBUG
@@ -164,14 +180,6 @@ int main() {
       printf("dimensions: %d\n", dim);
       printf("seed: %d\n", seed);
 #endif
-
-      // error checking for argument input
-      if (maxchar > MAXCHAR || maxchar < 'A') 
-         printf("Error: Maximum character can only be between 'A' " 
-          "and 'F' inclusive (case sensitive)\n");
-      if (dim < 1 | dim > MAXDIM) 
-         printf("Error: Bad dimensions given. Dimensions must be "
-          "at least 1 or at most 10\n");
          
       // initialize the model and random number generator
       srand(seed);
@@ -190,39 +198,35 @@ int main() {
       while (prompt_for_guess) {
          char guess[512];
 
-         printf("%d. Enter your guess: ", count++);
-         while (!get_guess(guess, dim, maxchar, count)) {
+         printf("\n%d. Enter your guess: ", count++);
+         if (!get_guess(guess, dim, maxchar, count)) {
             printf("Unexpected EOF\n");
+            return 1;
          }
 
          if (match(model, guess, dim) == dim) 
             prompt_for_guess = 0;
 
+#if DEBUG
          printf("%s\n", guess);
+#endif
       }
       
       // ask if user wants to quit
-      int valid_resp = 0;
-      while (!valid_resp) {
-         char quit_resp;
-         printf("quit? y/n ");
+      char quit_resp;
+      printf("Another game [Y/N]? ");
 
-         scanf("%c", &quit_resp);
-         scanf("%c", &discard);
-
-         printf("%c", quit_resp);
-
-         if (quit_resp == 'y' || quit_resp == 'n') {
-            valid_resp = 1;
-            if (quit_resp == 'y')
-               quit = 1;
-            else
-               quit = 0;
-         }
-         else {
-            printf("\nError: Invalid response\n");
-         }
+      if (scanf("%c", &quit_resp) == EOF) {
+         printf("Unexpected EOF\n");
+         return 1;
       }
+
+      scanf("%c", &discard);
+
+      if (quit_resp == 'Y' || quit_resp == 'y') 
+         quit = 0;
+      else
+         quit = 1;
 
       printf("\n\n");
    }
