@@ -54,13 +54,14 @@ int match(char model[], char guess[], int dimensions) {
       existMap[i] = 0;
    }
 
-   // traverse through characters in model and set their respective indeces
-   // in existMap (existMap is just a bit vector) to true
+   // traverse through characters in guess and set their respective indeces
+   // in existMap (existMap is just a bit vector) to true. Simultaneously
+   // increment exact matches
    for (i = 0; i < dimensions; i++) {
-      if (model[i] == guess[i])
+      if (guess[i] == model[i])
          exact++;
       else
-         existMap[model[i] - 'A']++;
+         existMap[guess[i] - 'A']++;
    }
 
 #if DEBUG
@@ -70,9 +71,10 @@ int match(char model[], char guess[], int dimensions) {
    }
 #endif
 
-   // check if exact match else see if inexact match
+   // increment inexact matches by traversing through each character in
+   // model and searching for them in existMap
    for (i = 0; i < dimensions; i++) {
-      if (guess[i] != model[i] && existMap[guess[i] - 'A']) 
+      if (model[i] != guess[i] && existMap[model[i] - 'A']) 
          inexact++;
    }
 
@@ -147,45 +149,46 @@ int main() {
 
    int quit = 0;
    char discard;
+   int checkArgNum;
 
-   while (!quit) {
-      int checkArgNum;
+   // prompt user input
+   printf("Enter maxchar, dimensions, and seed => ");
+   checkArgNum = scanf("%c %d %d", &maxchar, &dim, &seed);
 
-      // prompt user input
-      printf("Enter maxchar, dimensions, and seed => ");
-      checkArgNum = scanf("%c %d %d", &maxchar, &dim, &seed);
-
-      // error checking for argument input
-      if (checkArgNum != NUMPARAMS) {
+   // error checking for argument input
+   if (checkArgNum != NUMPARAMS) {
+      printf("Error: Bad initial values\n");
+      return 1;
+   }
+   else {
+      scanf("%c", &discard);
+         
+      if (!isalpha(maxchar)) {
          printf("Error: Bad initial values\n");
          return 1;
       }
-      else {
-         scanf("%c", &discard);
-         
-         if (!isalpha(maxchar)) {
-            printf("Error: Bad initial values\n");
-            return 1;
-         }
 
-         if (islower(maxchar))
-            maxchar = maxchar + 'A' - 'a';
+      if (islower(maxchar))
+         maxchar = maxchar + 'A' - 'a';
 
-         if (maxchar > MAXCHAR || dim < 1 || dim > MAXDIM) {
-            printf("Error: Bad initial values\n");
-            return 1;
-         }
+      if (maxchar > MAXCHAR || dim < 1 || dim > MAXDIM) {
+         printf("Error: Bad initial values\n");
+         return 1;
       }
+   }
 
 #if DEBUG
-      // output user input to console
-      printf("\nmaxchar: %c\n", maxchar);
-      printf("dimensions: %d\n", dim);
-      printf("seed: %d\n", seed);
+   // output user input to console
+   printf("\nmaxchar: %c\n", maxchar);
+   printf("dimensions: %d\n", dim);
+   printf("seed: %d\n", seed);
 #endif
          
-      // initialize the model and random number generator
-      srand(seed);
+   // initialize random number generator by calling srand once
+   srand(seed);
+
+   while (!quit) {
+      // initialize model
       char model[dim]; 
       initialize(model, dim, maxchar);
 
@@ -225,11 +228,11 @@ int main() {
       for (i = 0; i < gameNum; i++) {
          sum += tryLog[i]; 
       }
-      printf("Current average: %0.3f\n", sum / gameNum);
+      printf("\n\nCurrent average: %0.3f\n", sum / gameNum);
 
       // ask if user wants to quit
       char quit_resp;
-      printf("Another game [Y/N]? ");
+      printf("\nAnother game [Y/N]? ");
 
       if (scanf("%c", &quit_resp) == EOF) {
          printf("Unexpected EOF\n");
@@ -244,8 +247,9 @@ int main() {
       }
       else
          quit = 1;
-
-      printf("\n\n");
    }
+
+   printf("\n");
+   return 0;
 
 }
