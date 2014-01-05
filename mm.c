@@ -112,13 +112,19 @@ int get_guess(char guess[], int dimensions, char maxchar, int try) {
          if (scanf("%c", &letter) == EOF)
             return 0;
          
-         if (isalpha(letter) && i < dimensions) {
+         if (isalpha(letter)) {
             if (islower(letter))
                guess[i++] = letter + 'A' - 'a';
             else
                guess[i++] = letter;
          }
-      } while (letter != '\n'); 
+      } while (i < dimensions); 
+
+
+      // get rid of the extra characters all the way to the EOL
+      do {
+         scanf("%c", &discard);
+      } while (discard != '\n');
 
       // if user gave pattern with bad dimensions
       if (i < dimensions) {
@@ -131,6 +137,7 @@ int get_guess(char guess[], int dimensions, char maxchar, int try) {
       // if user gave bad characters
       for (i = 0; i < dimensions; i++) {
          if (guess[i] > maxchar) {
+            printf("Bad entry. Try again: ");
             retry = 1;
          }
       }
