@@ -101,47 +101,39 @@ int non_blank(void) {
  */
 int get_guess(char guess[], int dimensions, char maxchar, int try) {
    char discard;
-   int retry;
-   int i;
+   int retry = 0;
+   int i = 0;
 
+   // take input one character at a time and parse
+   // make sure each character is an uppercase letter
+   char letter;
    do {
-      i = 0;
-      retry = 0;
-
-      // take input one character at a time and parse
-      // make sure each character is an uppercase letter
-      char letter;
-      do {
-         scanf("%c", &letter);
+      scanf("%c", &letter);
          
-         if (isalpha(letter) && i < dimensions) {
-            if (islower(letter))
-               guess[i++] = letter + 'A' - 'a';
-            else
-               guess[i++] = letter;
-         }
-      } while (letter != '\n'); 
-
-      // if user gave pattern with bad dimensions, retry
-      if (i < dimensions) {
-         printf("Error: Bad format. Try again\n");
-         retry = 1;
-         continue;
+      if (isalpha(letter) && i < dimensions) {
+         if (islower(letter))
+            guess[i++] = letter + 'A' - 'a';
+         else
+            guess[i++] = letter;
       }
+   } while (letter != '\n'); 
 
-      // good dimensions so add a null to the end of guess
-      guess[dimensions] = 0;
+   // if user gave pattern with bad dimensions
+   if (i < dimensions) {
+      return 0;
+   }
 
-      // if user gave bad characters
-      for (i = 0; i < dimensions; i++) {
-         if (guess[i] > maxchar) {
-            printf("Error: Bad format. Try again\n");
-            retry = 1;
-            break;
-         }
+   // good dimensions so add a null to the end of guess
+   guess[dimensions] = 0;
+
+   // if user gave bad characters
+   for (i = 0; i < dimensions; i++) {
+      if (guess[i] > maxchar) {
+         return 0;
       }
-      
-   } while(retry);
+   }
+
+   return 1;
 }
  
 int main() {
@@ -199,7 +191,9 @@ int main() {
          char guess[512];
 
          printf("%d. Enter your guess: ", count++);
-         get_guess(guess, dim, maxchar, count);
+         while (!get_guess(guess, dim, maxchar, count)) {
+            printf("Unexpected EOF\n");
+         }
 
          if (match(model, guess, dim) == dim) 
             prompt_for_guess = 0;
