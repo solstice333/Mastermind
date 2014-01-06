@@ -1,23 +1,85 @@
 Enter maxchar, dimensions, and seed => 
- 1. Enter your guess:     2 Exact and 0 Inexact
+maxchar: F
+dimensions: 4
+seed: 1
+model: ADEAÿ
 
- 2. Enter your guess:     0 Exact and 4 Inexact
+ 1. Enter your guess: index 0 (A): 0
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 0
+index 4 (E): 0
+index 5 (F): 2
+    2 Exact and 0 Inexact
+ADFF
 
- 3. Enter your guess:     1 Exact and 2 Inexact
+ 2. Enter your guess: index 0 (A): 2
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 1
+index 4 (E): 1
+index 5 (F): 0
+    0 Exact and 4 Inexact
+DAAE
 
- 4. Enter your guess:     0 Exact and 1 Inexact
+ 3. Enter your guess: index 0 (A): 2
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 1
+index 4 (E): 0
+index 5 (F): 0
+    1 Exact and 2 Inexact
+DAAA
 
- 5. Enter your guess:     0 Exact and 4 Inexact
+ 4. Enter your guess: index 0 (A): 0
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 0
+index 4 (E): 2
+index 5 (F): 2
+    0 Exact and 1 Inexact
+EEFF
 
- 6. Enter your guess:     4 Exact and 0 Inexact
+ 5. Enter your guess: index 0 (A): 2
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 1
+index 4 (E): 1
+index 5 (F): 0
+    0 Exact and 4 Inexact
+DAAE
+
+ 6. Enter your guess: index 0 (A): 0
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 0
+index 4 (E): 0
+index 5 (F): 0
+    4 Exact and 0 Inexact
+ADEA
 
 
 Current average:  6.000
 
-Another game [Y/N]? 
- 1. Enter your guess:     2 Exact and 0 Inexact
+Another game [Y/N]? model: BFAFÿ
 
- 2. Enter your guess:     4 Exact and 0 Inexact
+ 1. Enter your guess: index 0 (A): 0
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 0
+index 4 (E): 0
+index 5 (F): 2
+    2 Exact and 0 Inexact
+FFFF
+
+ 2. Enter your guess: index 0 (A): 0
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 0
+index 4 (E): 0
+index 5 (F): 0
+    4 Exact and 0 Inexact
+BFAF
 
 
 Current average:  4.000

@@ -1,9 +1,35 @@
 Enter maxchar, dimensions, and seed => 
- 1. Enter your guess:     2 Exact and 0 Inexact
+maxchar: D
+dimensions: 5
+seed: 2
+model: BCDCD
 
- 2. Enter your guess:     2 Exact and 0 Inexact
+ 1. Enter your guess: index 0 (A): 0
+index 1 (B): 0
+index 2 (C): 3
+index 3 (D): 0
+index 4 (E): 0
+index 5 (F): 0
+    2 Exact and 0 Inexact
+CCCCC
 
- 3. Enter your guess:     Bad entry.  Try again:     5 Exact and 0 Inexact
+ 2. Enter your guess: index 0 (A): 0
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 3
+index 4 (E): 0
+index 5 (F): 0
+    2 Exact and 0 Inexact
+DDDDD
+
+ 3. Enter your guess:     Bad entry.  Try again: index 0 (A): 0
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 0
+index 4 (E): 0
+index 5 (F): 0
+    5 Exact and 0 Inexact
+BCDCD
 
 
 Current average:  3.000

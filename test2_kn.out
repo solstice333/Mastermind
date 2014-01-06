@@ -1,5 +1,17 @@
 Enter maxchar, dimensions, and seed => 
- 1. Enter your guess:     4 Exact and 0 Inexact
+maxchar: F
+dimensions: 4
+seed: 1
+model: ADEAÿ
+
+ 1. Enter your guess: index 0 (A): 0
+index 1 (B): 0
+index 2 (C): 0
+index 3 (D): 0
+index 4 (E): 0
+index 5 (F): 0
+    4 Exact and 0 Inexact
+ADEA
 
 
 Current average:  1.000

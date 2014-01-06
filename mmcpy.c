@@ -5,7 +5,7 @@
 #define MAXCHAR 'F'
 #define NUMPARAMS 3
 
-#define DEBUG 1
+#define DEBUG 0
 
 static int seed;
 
@@ -254,6 +254,7 @@ int main() {
          printf("Unexpected EOF");
          return 1;
       }
+      //scanf("%c", &discard);
 
       if (quit_resp == 'Y' || quit_resp == 'y') {
          quit = 0;
