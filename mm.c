@@ -35,7 +35,6 @@ void initialize(char model[], int dimensions, char maxchar) {
    for (i = 0; i < dimensions; i++) {
       model[i] = rand() % (maxchar + 1 - 'A') + 'A';
    }
-   model[i] = 0;
 }
  
 /* Compare "model" to "guess", assuming each contains "dimensions"
@@ -78,7 +77,7 @@ int match(char model[], char guess[], int dimensions) {
          inexact++;
    }
 
-   printf("%d Exact and %d Inexact\n", exact, inexact);
+   printf("    %d Exact and %d Inexact\n", exact, inexact);
    return exact;
 }
  
@@ -86,6 +85,12 @@ int match(char model[], char guess[], int dimensions) {
  * you hit EOF while trying to find the next nonblank character
  */
 int non_blank(void) {
+   char value;
+
+   if (scanf(" %c", &value) == EOF)
+      return EOF;
+
+   return value;
 }
  
 /* Input the user's guess, putting it into "guess".  Assume that
@@ -109,7 +114,7 @@ int get_guess(char guess[], int dimensions, char maxchar, int try) {
       // make sure each character is an uppercase letter
       char letter;
       do {
-         if (scanf("%c", &letter) == EOF)
+         if ((letter = non_blank()) == EOF)
             return 0;
          
          if (isalpha(letter)) {
@@ -137,7 +142,7 @@ int get_guess(char guess[], int dimensions, char maxchar, int try) {
       // if user gave bad characters
       for (i = 0; i < dimensions; i++) {
          if (guess[i] > maxchar) {
-            printf("Bad entry. Try again: ");
+            printf("    Bad entry.  Try again: ");
             retry = 1;
          }
       }
@@ -152,7 +157,7 @@ int main() {
    int seed;
 
    int gameNum = 1;
-   double tryLog[1024];
+   double sum = 0;
 
    int quit = 0;
    char discard;
@@ -160,26 +165,34 @@ int main() {
 
    // prompt user input
    printf("Enter maxchar, dimensions, and seed => ");
-   checkArgNum = scanf("%c %d %d", &maxchar, &dim, &seed);
+
+   checkArgNum = scanf(" %c %d %d", &maxchar, &dim, &seed);
 
    // error checking for argument input
    if (checkArgNum != NUMPARAMS) {
-      printf("Error: Bad initial values\n");
+      printf("Bad initial values");
       return 1;
    }
    else {
-      scanf("%c", &discard);
-         
+      // flush 
+      do {
+         scanf("%c", &discard);
+      } while (discard != '\n');
+
+      // is maxchar a letter
       if (!isalpha(maxchar)) {
-         printf("Error: Bad initial values\n");
+         printf("Bad initial values");
          return 1;
       }
 
-      if (islower(maxchar))
+      // if maxchar is lowercase
+      else if (islower(maxchar))
          maxchar = maxchar + 'A' - 'a';
 
+      // check the maxchar if greater than MAXCHAR and dim
+      // if it's greater than MAXDIM
       if (maxchar > MAXCHAR || dim < 1 || dim > MAXDIM) {
-         printf("Error: Bad initial values\n");
+         printf("Bad initial values");
          return 1;
       }
    }
@@ -190,7 +203,7 @@ int main() {
    printf("dimensions: %d\n", dim);
    printf("seed: %d\n", seed);
 #endif
-         
+
    // initialize random number generator by calling srand once
    srand(seed);
 
@@ -200,8 +213,8 @@ int main() {
       initialize(model, dim, maxchar);
 
 #if DEBUG
-      // output the model
-      printf("model: %s\n", model);
+   // output the model
+   printf("model: %s\n", model);
 #endif
 
       // begin prompting for guess
@@ -211,42 +224,37 @@ int main() {
       while (prompt_for_guess) {
          char guess[512];
 
-         printf("\n%d. Enter your guess: ", count);
+         printf("\n %d. Enter your guess: ", count);
+
          if (!get_guess(guess, dim, maxchar, count)) {
-            printf("Unexpected EOF\n");
+            printf("Unexpected EOF");
             return 1;
          }
 
          if (match(model, guess, dim) == dim) {
             prompt_for_guess = 0;
-            tryLog[gameNum - 1] = count;
+            sum += count;
          }
 
          count++;
 
 #if DEBUG
-         printf("%s\n", guess);
+      printf("%s\n", guess);
 #endif
       }
 
       // display current average
-      int i; 
-      double sum = 0;
-      for (i = 0; i < gameNum; i++) {
-         sum += tryLog[i]; 
-      }
-      printf("\n\nCurrent average: %0.3f\n", sum / gameNum);
+      printf("\n\nCurrent average:  %0.3f\n", sum / gameNum);
 
       // ask if user wants to quit
       char quit_resp;
       printf("\nAnother game [Y/N]? ");
 
-      if (scanf("%c", &quit_resp) == EOF) {
-         printf("Unexpected EOF\n");
+      if ((quit_resp = non_blank()) == EOF) {
+         printf("Unexpected EOF");
          return 1;
       }
-
-      scanf("%c", &discard);
+      //scanf("%c", &discard);
 
       if (quit_resp == 'Y' || quit_resp == 'y') {
          quit = 0;
@@ -256,7 +264,5 @@ int main() {
          quit = 1;
    }
 
-   printf("\n");
    return 0;
-
 }

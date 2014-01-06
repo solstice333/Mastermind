@@ -1,0 +1,25 @@
+Enter maxchar, dimensions, and seed => 
+ 1. Enter your guess:     2 Exact and 0 Inexact
+
+ 2. Enter your guess:     0 Exact and 4 Inexact
+
+ 3. Enter your guess:     1 Exact and 2 Inexact
+
+ 4. Enter your guess:     0 Exact and 1 Inexact
+
+ 5. Enter your guess:     0 Exact and 4 Inexact
+
+ 6. Enter your guess:     4 Exact and 0 Inexact
+
+
+Current average:  6.000
+
+Another game [Y/N]? 
+ 1. Enter your guess:     2 Exact and 0 Inexact
+
+ 2. Enter your guess:     4 Exact and 0 Inexact
+
+
+Current average:  4.000
+
+Another game [Y/N]? 
