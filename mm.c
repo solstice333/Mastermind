@@ -87,8 +87,7 @@ int match(char model[], char guess[], int dimensions) {
 int non_blank(void) {
    char value;
 
-   if (scanf(" %c", &value) == EOF)
-      return EOF;
+   while ((value = getchar()) != EOF && value == ' ') {}
 
    return value;
 }
@@ -125,10 +124,9 @@ int get_guess(char guess[], int dimensions, char maxchar, int try) {
          }
       } while (i < dimensions); 
 
-
-      // get rid of the extra characters all the way to the EOL
+      // flush
       do {
-         scanf("%c", &discard);
+         discard = getchar();
       } while (discard != '\n');
 
       // if user gave pattern with bad dimensions
@@ -170,18 +168,18 @@ int main() {
 
    // error checking for argument input
    if (checkArgNum != NUMPARAMS) {
-      printf("Bad initial values");
+      printf("Bad initial values\n");
       return 1;
    }
    else {
       // flush 
       do {
-         scanf("%c", &discard);
+         discard = getchar();
       } while (discard != '\n');
 
       // is maxchar a letter
       if (!isalpha(maxchar)) {
-         printf("Bad initial values");
+         printf("Bad initial values\n");
          return 1;
       }
 
@@ -192,7 +190,7 @@ int main() {
       // check the maxchar if greater than MAXCHAR and dim
       // if it's greater than MAXDIM
       if (maxchar > MAXCHAR || dim < 1 || dim > MAXDIM) {
-         printf("Bad initial values");
+         printf("Bad initial values\n");
          return 1;
       }
    }
@@ -207,6 +205,7 @@ int main() {
    // initialize random number generator by calling srand once
    srand(seed);
 
+   // start game event loop
    while (!quit) {
       // initialize model
       char model[dim]; 
@@ -227,7 +226,7 @@ int main() {
          printf("\n %d. Enter your guess: ", count);
 
          if (!get_guess(guess, dim, maxchar, count)) {
-            printf("Unexpected EOF");
+            printf("Unexpected EOF\n");
             return 1;
          }
 
@@ -251,7 +250,7 @@ int main() {
       printf("\nAnother game [Y/N]? ");
 
       if ((quit_resp = non_blank()) == EOF) {
-         printf("Unexpected EOF");
+         printf("Unexpected EOF\n");
          return 1;
       }
 

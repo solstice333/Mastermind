@@ -12,16 +12,16 @@ echo -e "\n< your output"
 echo -e "\n> expected output\n"
 
 echo -e "\nTEST1\n"
-diff test1_kn.out test1.out
+diff -bw test1_kn.out test1.out
 echo -e "\nTEST2\n"
-diff test2_kn.out test2.out
+diff -bw test2_kn.out test2.out
 echo -e "\nTEST3\n"
-diff test3_kn.out test3.out
+diff -bw test3_kn.out test3.out
 echo -e "\nTEST4\n"
-diff test4_kn.out test4.out
+diff -bw test4_kn.out test4.out
 echo -e "\nTEST5\n"
-diff test5_kn.out test5.out
+diff -bw test5_kn.out test5.out
 echo -e "\nTEST6\n"
-diff test6_kn.out test6.out
+diff -bw test6_kn.out test6.out
 echo -e "\nTEST7\n"
-diff test7_kn.out test7.out
+diff -bw test7_kn.out test7.out

@@ -63,13 +63,6 @@ int match(char model[], char guess[], int dimensions) {
          existMap[guess[i] - 'A']++;
    }
 
-#if DEBUG
-   // check existMap
-   for (i = 0; i < mapsize; i++) {
-      printf("index %d (%c): %d\n", i, i + 'A', existMap[i]);
-   }
-#endif
-
    // increment inexact matches by traversing through each character in
    // model and searching for them in existMap
    for (i = 0; i < dimensions; i++) {
@@ -87,8 +80,7 @@ int match(char model[], char guess[], int dimensions) {
 int non_blank(void) {
    char value;
 
-   if (scanf(" %c", &value) == EOF)
-      return EOF;
+   while ((value = getchar()) != EOF && value == ' ') {}
 
    return value;
 }
@@ -125,10 +117,9 @@ int get_guess(char guess[], int dimensions, char maxchar, int try) {
          }
       } while (i < dimensions); 
 
-
-      // get rid of the extra characters all the way to the EOL
+      // flush
       do {
-         scanf("%c", &discard);
+         discard = getchar();
       } while (discard != '\n');
 
       // if user gave pattern with bad dimensions
@@ -170,18 +161,18 @@ int main() {
 
    // error checking for argument input
    if (checkArgNum != NUMPARAMS) {
-      printf("Bad initial values");
+      printf("Bad initial values\n");
       return 1;
    }
    else {
       // flush 
       do {
-         scanf("%c", &discard);
+         discard = getchar();
       } while (discard != '\n');
 
       // is maxchar a letter
       if (!isalpha(maxchar)) {
-         printf("Bad initial values");
+         printf("Bad initial values\n");
          return 1;
       }
 
@@ -192,17 +183,10 @@ int main() {
       // check the maxchar if greater than MAXCHAR and dim
       // if it's greater than MAXDIM
       if (maxchar > MAXCHAR || dim < 1 || dim > MAXDIM) {
-         printf("Bad initial values");
+         printf("Bad initial values\n");
          return 1;
       }
    }
-
-#if DEBUG
-   // output user input to console
-   printf("\nmaxchar: %c\n", maxchar);
-   printf("dimensions: %d\n", dim);
-   printf("seed: %d\n", seed);
-#endif
 
    // initialize random number generator by calling srand once
    srand(seed);
@@ -211,11 +195,6 @@ int main() {
       // initialize model
       char model[dim]; 
       initialize(model, dim, maxchar);
-
-#if DEBUG
-   // output the model
-   printf("model: %s\n", model);
-#endif
 
       // begin prompting for guess
       int prompt_for_guess = 1;
@@ -227,7 +206,7 @@ int main() {
          printf("\n %d. Enter your guess: ", count);
 
          if (!get_guess(guess, dim, maxchar, count)) {
-            printf("Unexpected EOF");
+            printf("Unexpected EOF\n");
             return 1;
          }
 
@@ -237,10 +216,6 @@ int main() {
          }
 
          count++;
-
-#if DEBUG
-      printf("%s\n", guess);
-#endif
       }
 
       // display current average
@@ -251,10 +226,9 @@ int main() {
       printf("\nAnother game [Y/N]? ");
 
       if ((quit_resp = non_blank()) == EOF) {
-         printf("Unexpected EOF");
+         printf("Unexpected EOF\n");
          return 1;
       }
-      //scanf("%c", &discard);
 
       if (quit_resp == 'Y' || quit_resp == 'y') {
          quit = 0;
