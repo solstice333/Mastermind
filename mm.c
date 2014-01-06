@@ -5,7 +5,7 @@
 #define MAXCHAR 'F'
 #define NUMPARAMS 3
 
-#define DEBUG 1
+#define DEBUG 0
 
 static int seed;
 
