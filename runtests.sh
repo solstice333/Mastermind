@@ -7,6 +7,9 @@
 ./a.out < test5.in > test5_kn.out
 ./a.out < test6.in > test6_kn.out
 ./a.out < test7.in > test7_kn.out
+./a.out < test8.in > test8_kn.out
+./a.out < test9.in > test9_kn.out
+./a.out < test10.in > test10_kn.out
 
 echo -e "\n< your output"
 echo -e "\n> expected output\n"
@@ -25,3 +28,9 @@ echo -e "\nTEST6\n"
 diff -bw test6_kn.out test6.out
 echo -e "\nTEST7\n"
 diff -bw test7_kn.out test7.out
+echo -e "\nTEST8\n"
+diff -bw test8_kn.out test8.out
+echo -e "\nTEST9\n"
+diff -bw test9_kn.out test9.out
+echo -e "\nTEST10\n"
+diff -bw test10_kn.out test10.out
