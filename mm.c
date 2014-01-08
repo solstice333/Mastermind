@@ -5,7 +5,7 @@
 #define MAXCHAR 'F'
 #define NUMPARAMS 3
 
-#define DEBUG 0
+#define DEBUG 1
 
 static int seed;
 
@@ -33,7 +33,11 @@ void initialize(char model[], int dimensions, char maxchar) {
    int i;
 
    for (i = 0; i < dimensions; i++) {
-      model[i] = rand() % (maxchar + 1 - 'A') + 'A';
+      model[i] = abs(rand()) % (maxchar + 1 - 'A') + 'A';
+
+#if DEBUG
+      printf("%d\n", model[i]);
+#endif
    }
 }
  
@@ -138,7 +142,8 @@ int get_guess(char guess[], int dimensions, char maxchar, int try) {
  
 int main() {
    char maxchar;
-   int dim = 0, seed = 1;
+   int dim = 0; 
+   long int seed = 1;
 
    int done = 0, gameNum = 0;
    int initState = 1, guessState = 0, count = 1, anotherState = 0;
@@ -147,7 +152,7 @@ int main() {
 
    // prompt user input
    printf("Enter maxchar, dimensions, and seed => ");
-   scanf(" %c %d %d", &maxchar, &dim, &seed);
+   scanf(" %c %d %ld", &maxchar, &dim, &seed);
 
    // make maxchar uppercase 
    if (islower(maxchar))
@@ -164,7 +169,7 @@ int main() {
    // output user input to console
    printf("\nmaxchar: %c\n", maxchar);
    printf("dimensions: %d\n", dim);
-   printf("seed: %d\n", seed);
+   printf("seed: %ld\n", seed);
 #endif
 
    // initialize random number generator by calling srand once
